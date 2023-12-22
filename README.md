@@ -16,17 +16,12 @@ Below is a table describing the environment variables for the consumed by the sc
 
 | Variable            | Purpose                                                                                                                                          |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `NOTIFI_INIT_TOKEN` | This is a special token utilized for generating future authentication tokens.                                                                    |
-| `NOTIFI_DAPP_ID`    | Identifies the DApp for which you'll create auth tokens using the `NOTIFI_INIT_TOKEN`.                                                           |
 | `NOTIFI_AUTH_TOKEN` | This token is necessary for API requests within the development environment - It can be derived from the `NOTIFI_INIT_TOKEN` if one is provided. |
 | `FUSION_SOURCE_ID`  | Identifies the specific parser you intend to develop or modify in the Notifi environment.                                                        |
 
 ### Launching the Development Environment
 
-To activate the environment, you must provide either of the following sets of variables:
-
-- Set 1: `NOTIFI_INIT_TOKEN`, `NOTIFI_DAPP_ID`, and `FUSION_SOURCE_ID`.
-- Set 2: `NOTIFI_AUTH_TOKEN` and `FUSION_SOURCE_ID`.
+To activate the environment, you must provide a `NOTIFI_AUTH_TOKEN`, and an optional `FUSION_SOURCE_ID` if you wish to automatically create the parser template.
 
 After securing these values, make sure they are set and run the script to start the environment.
 
