@@ -18,6 +18,7 @@ services:
     environment:
       - NOTIFI_AUTH_TOKEN=${NOTIFI_AUTH_TOKEN:-}
       - FUSION_SOURCE_ID=${FUSION_SOURCE_ID:-}
+      - NOTIFI_ENV=${NOTIFI_ENV:-}
       - HOST_USER_ID=${HOST_USER_ID}
       - HOST_GROUP_ID=${HOST_GROUP_ID}
       - HOME_DIRECTORY_OVERRIDE=/home
