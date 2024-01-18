@@ -37,11 +37,13 @@ export HOST_GROUP_ID=$(id -g)
 
 # Step 4: Run the docker-compose file
 
+docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION pull
 # Stop existing containers, if any
 docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION down || true
 
-# Run Docker Compose
-docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up localfusion --build -d
+# Run Docker Compose for localfusion service
+docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build -d localfusion
+# Run Docker Compose for fusion-development service
 docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build -d fusion-development
 
 # Display the latest logs and then continue
