@@ -14,8 +14,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        USER_ID: ${USER_ID:-1000}  # Default value is 1000 if not set
-        GROUP_ID: ${GROUP_ID:-1000}  # Default value is 1000 if not set
+        USER_ID: "${USER_ID:-1000}"
+        GROUP_ID: "${GROUP_ID:-1000}"
     user: notifi-dev
     container_name: fusion-development
     volumes:
