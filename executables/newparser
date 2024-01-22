@@ -1,0 +1,178 @@
+#!/bin/bash
+# TODO: migrate as much of this as possible into the fusion cli 'init' command...
+
+cd /usr/local/bin
+
+# Authenticate with notifi admin API...
+fusion auth
+
+#this is a bash script that allows the user to create a new parser
+BASE_DIRECTORY="/home/notifi-dev"
+FUSION_SOURCES_DIRECTORY="/home/notifi-dev/fusion-sources"
+GRAPHQL_SCRIPTS_DIRECTORY="/home/notifi-dev/common/graphql-js"
+
+PARSER_CONFIG_FILE_NAME="notifi.config.json"
+
+# VALID_OPTIONS="1 2 3 4 5 6 7 8 9 10 11 12 13"
+VALID_OPTIONS="1 2 3 4 5 6 7 9 11 13" # Only EVM chains enabled by local fusion tooling at the moment....
+read -p $'Enter one of the following values (numbers):
+1: Start without generating new parser\n
+2: OFF-CHAIN \t\t 3: ARBITRUM\n
+4: AVALANCHE \t\t 5: BINANCE\n
+6: ETHEREUM \t\t 7: EVMOS\n
+8: INJECTIVE \t\t 9: OPTIMISM\n
+10: OSMOSIS \t\t 11: POLYGON\n
+12: SUI \t\t 13: ZKSYNC\n
+Value: ' PARSERTYPE
+
+
+# Validate the input
+while [[ -z "$PARSERTYPE" ]] || [[ ! $VALID_OPTIONS =~ (^| )$PARSERTYPE($| ) ]]; do
+    if [[ ! -z "$PARSERTYPE" ]] && [[ $PARSERTYPE -le 13 ]]; then
+        echo "This parser type is not yet supported, only OFF-CHAIN, & EVM chains enabled currently."
+    else
+        echo "Invalid input. Please enter a valid input."
+    fi
+    read -p $'Value:  ' PARSERTYPE
+done
+
+
+declare -A OPTION_MAP
+OPTION_MAP=(
+    ["1"]="no_parser"
+    ["2"]="4"
+    ["3"]="6"
+    ["4"]="10"
+    ["5"]="7"
+    ["6"]="3"
+    ["7"]="15"
+    ["8"]="13"
+    ["9"]="12"
+    ["10"]="11"
+    ["11"]="5"
+    ["12"]="14"
+    ["13"]="16"
+)
+
+declare -A DEFAULT_RPC_MAP
+DEFAULT_RPC_MAP=(
+    ["2"]="4"
+    ["3"]="https://rpc.ankr.com/ethereum"
+    ["4"]="https://rpc.ankr.com/avalanche"
+    ["5"]="https://rpc.ankr.com/bsc"
+    ["6"]="https://rpc.ankr.com/arbitrum"
+    ["7"]="15"
+    ["8"]="13"
+    ["9"]="https://rpc.ankr.com/optimism"
+    ["10"]="11"
+    ["11"]="https://rpc.ankr.com/polygon"
+    ["12"]="14"
+    ["13"]="16"
+)
+
+DEFAULT_RPC="${DEFAULT_RPC_MAP[$PARSERTYPE]}"
+parser_blockchain_type="${OPTION_MAP[$PARSERTYPE]}"
+
+if [[ "$parser_blockchain_type" == "no_parser" ]]; then
+	exit 0;
+fi
+
+
+#check if there is already a parser with that name
+
+while true; do
+    read -p "Enter parser name: " parserName
+    target_dir="$FUSION_SOURCES_DIRECTORY/$parserName"
+    if [[ $parserName == "" ]]; then
+        echo "Parser name cannot be empty"
+    elif [[ -d "$target_dir" ]]; then
+        echo "A parser with this name already exists, please enter another name"
+    elif [[ $parserName =~ " " ]]; then
+        echo "parser name cannot contain spaces"
+    else
+        break
+    fi
+done
+
+case $parser_blockchain_type in
+	"3" | "15" | "7" | "6" | "10" | "12" | "5" | "16")
+	#generate evm parser for this
+	copy_dir="/home/notifi-dev/assets/baseparsers/evm-parser"
+	;;
+	"11")
+	copy_dir="/home/notifi-dev/assets/baseparsers/osmosis-parser"
+	;;
+	"14")
+	copy_dir="/home/notifi-dev/assets/baseparsers/sui-parser"
+	;;
+	"4")
+	copy_dir="/home/notifi-dev/assets/baseparsers/offchain-parser"
+	;;
+
+esac
+
+# If option is not "4" do the following:
+
+if [[ "$parser_blockchain_type" != "4" ]]; then
+#read in their RPC endpoint (if they have one)
+echo If you have your own RPC endpoint, enter now, otherwise default will be used
+read -p "Endpoint: " RPCENDPOINT
+# Set the RPC endpoint to the default if it is an empty string
+    if [[ -z $RPCENDPOINT ]]; then
+        RPCENDPOINT=$DEFAULT_RPC
+    fi
+fi
+
+
+
+mkdir -p $target_dir
+
+#copy vscode config across
+cp -r $copy_dir/* "/$target_dir"
+cp -r $BASE_DIRECTORY/assets/.vscode "/$target_dir"
+
+#copy the README across
+cp -r $BASE_DIRECTORY/assets/README.md "/$target_dir"
+
+#use sed to alter the vscode launch config remoteRoot route
+launch_json_path="$target_dir/.vscode/launch.json"
+
+# New remoteRoot value
+remote_root="\"remoteRoot\": \"/home/notifi-dev/fusion-sources/${parserName}\","
+# Use sed to replace the remoteRoot line
+sed -i "s|\"remoteRoot\": \".*\",|$remote_root|" "$launch_json_path"
+
+
+#string replace blockchaintype and rpc endopint if present
+parser_config_path="$target_dir/$PARSER_CONFIG_FILE_NAME"
+
+# Temporary file for intermediate JSON
+temp_file=$(mktemp)
+
+
+if [[ "$parser_blockchain_type" != "4" ]]; then
+    jq '.tooling.rpcUrl = "'"$RPCENDPOINT"'"' $parser_config_path > "$temp_file" && mv "$temp_file" $parser_config_path
+fi
+
+# Add tooling configuration values to the json file...
+jq '.tooling.blockchainManagerUrl = "localfusion:50051"' $parser_config_path > "$temp_file" && mv "$temp_file" $parser_config_path
+jq '.tooling.ephemeralStorageUrl = "localfusion:50052"' $parser_config_path > "$temp_file" && mv "$temp_file" $parser_config_path
+jq '.tooling.persistentStorageUrl = "localfusion:50053"' $parser_config_path > "$temp_file" && mv "$temp_file" $parser_config_path
+
+# Clean up temporary file if still exists
+rm -f "$temp_file"
+
+#init parser config with correct details
+cd $target_dir 
+
+if [[ ! -z "$FUSION_SOURCE_ID" ]]; then
+    fusion parser init $FUSION_SOURCE_ID
+    unset FUSION_SOURCE_ID
+fi
+
+npm install
+
+
+
+echo New parser created!
+exit 0
