@@ -15,22 +15,20 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Setup user & group for development, fixes permissions issues
-RUN addgroup --gid $GROUP_ID notifi-dev \
-    && adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID notifi-dev \
-    && mkdir -p /etc/sudoers.d \
-    && echo 'notifi-dev ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/notifi-dev \
-    && chmod 0440 /etc/sudoers.d/notifi-dev
 
-WORKDIR /home/notifi-dev/
+
 # Copy assets and executables
 RUN git clone https://github.com/notifi-network/notifi-parser-sdk.git \
-    && mv notifi-parser-sdk/assets assets \
+    && sudo chmod +x notifi-parser-sdk/user-group-handle.sh \
+    && ./notifi-parser-sdk/user-group-handle.sh ${USER_ID} ${GROUP_ID} \
+    && mv notifi-parser-sdk/assets /home/notifi-dev/assets \
     && mv notifi-parser-sdk/executables/* /usr/local/bin/ \
     && rm -rf notifi-parser-sdk
 
 
 USER notifi-dev
+
+WORKDIR /home/notifi-dev/
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
     && export NVM_DIR="$HOME/.nvm" \
