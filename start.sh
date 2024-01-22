@@ -37,10 +37,8 @@ curl -fsSL -o $DOCKER_FILE_LOCATION $DOCKER_FILE_DOWNLOAD_URL
 # Stop existing containers, if any
 docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION down || true
 
-# Run Docker Compose for localfusion service
-docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up -d localfusion
 # Run Docker Compose for fusion-development service
-USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_FILE_LOCATION=$DEVELOPMENT_ENVIRONMENT_DIRECTORY docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build --no-cache fusion-development
+USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_FILE_LOCATION=$DEVELOPMENT_ENVIRONMENT_DIRECTORY docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build --no-cache
 
 # Display the latest logs and then continue
 docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION logs fusion-development
