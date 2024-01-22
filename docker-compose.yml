@@ -10,7 +10,13 @@ services:
       - "50053:50053"
       
   fusion-development:
-    image: notifinetwork/fusiondev:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - USER_ID: ${USER_ID:-1000}  # Default value is 1000 if not set
+        - GROUP_ID: ${GROUP_ID:-1000}  # Default value is 1000 if not set
+    user: notifi-dev
     container_name: fusion-development
     volumes:
       - "$HOME/.notifi/fusion-development/fusion-sources:/home/notifi-dev/dev-environment/dev-parsers"
