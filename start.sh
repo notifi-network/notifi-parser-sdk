@@ -42,9 +42,9 @@ docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION pull
 docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION down || true
 
 # Run Docker Compose for localfusion service
-docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build -d localfusion
+docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up -d localfusion
 # Run Docker Compose for fusion-development service
-docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build -d fusion-development
+docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION up --build --no-cache -d fusion-development
 
 # Display the latest logs and then continue
 docker-compose -f $DOCKER_COMPOSE_FILE_LOCATION logs fusion-development
