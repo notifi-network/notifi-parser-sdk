@@ -1,0 +1,27 @@
+#!/bin/bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Load NVM bash completion (optional).
+
+
+# Check if FUSION_SOURCE_ID and NOTIFI_AUTH_TOKEN are set, if so, init directly without calling into newparser
+if [[ -n "$FUSION_SOURCE_ID" && -n "$NOTIFI_AUTH_TOKEN" ]]; then
+    parser_location=$(fusion parser init $FUSION_SOURCE_ID)
+    echo "Parser Location: $parser_location"
+    eval "export $parser_location"
+
+    # Check if the output is a valid directory
+    if [ -d "$PARSER_DIRECTORY" ]; then
+        # Change to the directory
+        cd $PARSER_DIRECTORY; exec bash
+		
+    else
+        # Handle the case where the output is not a valid directory
+        echo "Failed to get a valid directory from fusion parser init. Output was: $parser_output"
+        # Additional error handling code goes here
+    fi
+else
+    newparser; exec bash
+fi
+
+exit 1
