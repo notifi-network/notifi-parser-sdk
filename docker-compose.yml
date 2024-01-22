@@ -14,8 +14,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - USER_ID: ${USER_ID:-1000}  # Default value is 1000 if not set
-        - GROUP_ID: ${GROUP_ID:-1000}  # Default value is 1000 if not set
+        - USER_ID=${USER_ID:-1000}  # Default value is 1000 if not set
+        - GROUP_ID=${GROUP_ID:-1000}  # Default value is 1000 if not set
     user: notifi-dev
     container_name: fusion-development
     volumes:
@@ -25,8 +25,6 @@ services:
       - NOTIFI_AUTH_TOKEN=${NOTIFI_AUTH_TOKEN:-}
       - FUSION_SOURCE_ID=${FUSION_SOURCE_ID:-}
       - NOTIFI_ENV=${NOTIFI_ENV:-}
-      - HOST_USER_ID=${HOST_USER_ID}
-      - HOST_GROUP_ID=${HOST_GROUP_ID}
       - HOME_DIRECTORY_OVERRIDE=/home
       - NOTIFI_DEV_CONTAINER=true
     ports:
