@@ -11,7 +11,7 @@ services:
       
   fusion-development:
     build:
-      context: .
+      context: "${DOCKER_FILE_LOCATION:-.}"
       dockerfile: Dockerfile
       args:
         USER_ID: "${USER_ID:-1000}"
