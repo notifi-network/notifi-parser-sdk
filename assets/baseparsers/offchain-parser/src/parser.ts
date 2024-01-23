@@ -1,7 +1,4 @@
-import { Offchain } from "@notifi-network-internal/fusion-types";
-import { CommonHost } from "@notifi-network-internal/fusion-types";
-import { BlockchainType } from "@notifi-network-internal/fusion-protobuf/dist/proto/notifi/common/v1/types.js";
-
+import { Offchain, CommonHost, BlockchainType } from "@notifi-network/fusion-types";
 const eventID = ""; //placeholder for now
 
 //grab events from args

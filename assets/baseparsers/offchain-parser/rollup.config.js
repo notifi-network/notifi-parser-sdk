@@ -9,10 +9,10 @@ export default {
   output: [
     {
       format: "esm",
-      file: "./dist/index.js",
+      file: "./dist/parser.js",
     },
     {
-      file: "./dist/index.min.js",
+      file: "./dist/parser.min.js",
       format: "esm",
       plugins: [terser()],
     },
