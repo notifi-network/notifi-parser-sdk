@@ -5,20 +5,27 @@ ARG GROUP_ID
 
 # Update and install dependencies
 RUN apt-get update && apt-get install -y \
-    git \
     curl \
     bash \
     nano \
     rsync \
     sudo \
     jq \
+    unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Clone the repo into /tmp directory
+# Set working directory
 WORKDIR /tmp
-RUN git clone https://github.com/notifi-network/notifi-parser-sdk.git
 
+# Download and unzip the release
+RUN curl -L -o notifi-parser-sdk.zip https://github.com/notifi-network/notifi-parser-sdk/archive/refs/tags/v0.0.0.zip \
+    && unzip notifi-parser-sdk.zip \
+    && rm notifi-parser-sdk.zip
+
+# Move to the appropriate directory (optional)
+# Note: Adjust this if the structure inside the zip is different.
+RUN mv notifi-parser-sdk-0.0.0 notifi-parser-sdk
 # Ensure the script is executable
 RUN chmod +x /tmp/notifi-parser-sdk/executables/user-group-handle.sh
 
