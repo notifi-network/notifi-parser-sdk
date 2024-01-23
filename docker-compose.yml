@@ -19,7 +19,7 @@ services:
     user: notifi-dev
     container_name: fusion-development
     volumes:
-      - "$HOME/.notifi/fusion-development/fusion-sources:/home/notifi-dev/dev-environment/dev-parsers"
+      - "$HOME/.notifi/fusion-development/fusion-sources:/home/notifi-dev/fusion-sources"
       - "$HOME/.notifi:/home/.notifi"
     environment:
       - NOTIFI_AUTH_TOKEN=${NOTIFI_AUTH_TOKEN:-}
