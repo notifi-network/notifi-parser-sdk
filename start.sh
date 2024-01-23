@@ -30,6 +30,8 @@ if [[ ! -f $DEV_AUTH_TOKEN_FILE ]]; then
 fi
 
 # Step 2: Download the latest version of the docker-compose file
+rm -f $DOCKER_COMPOSE_FILE_LOCATION
+rm -f $DOCKER_FILE_LOCATION
 curl -fsSL -o $DOCKER_COMPOSE_FILE_LOCATION $DOCKER_COMPOSE_DOWNLOAD_URL
 curl -fsSL -o $DOCKER_FILE_LOCATION $DOCKER_FILE_DOWNLOAD_URL
 
