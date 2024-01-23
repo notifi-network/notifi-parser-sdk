@@ -51,7 +51,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     && export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && nvm install 20.11.0 \
-    && npm install -g @notifi-network/local-fusion@3.0.24
+    && npm install -g @notifi-network/local-fusion@3.0.23
 
 
 # Make executables executable
