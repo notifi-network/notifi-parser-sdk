@@ -18,13 +18,11 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /tmp
 
-# Download and unzip the release
+# Download and unzip the release, we do this so that we can get the executables and assets
 RUN curl -L -o notifi-parser-sdk.zip https://github.com/notifi-network/notifi-parser-sdk/archive/refs/tags/v0.0.0.zip \
     && unzip notifi-parser-sdk.zip \
     && rm notifi-parser-sdk.zip
 
-# Move to the appropriate directory (optional)
-# Note: Adjust this if the structure inside the zip is different.
 RUN mv notifi-parser-sdk-0.0.0 notifi-parser-sdk
 # Ensure the script is executable
 RUN chmod +x /tmp/notifi-parser-sdk/executables/user-group-handle.sh
@@ -53,7 +51,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     && export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && nvm install 20.11.0 \
-    && npm install -g @notifi-network/local-fusion@3.0.23
+    && npm install -g @notifi-network/local-fusion@3.0.24
 
 
 # Make executables executable
