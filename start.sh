@@ -13,6 +13,13 @@ DOCKER_FILE_LOCATION="$DEVELOPMENT_ENVIRONMENT_DIRECTORY/Dockerfile"
 DOCKER_COMPOSE_DOWNLOAD_URL="https://raw.githubusercontent.com/notifi-network/notifi-parser-sdk/main/docker-compose.yml"
 DOCKER_FILE_DOWNLOAD_URL="https://raw.githubusercontent.com/notifi-network/notifi-parser-sdk/main/Dockerfile"
 
+
+# Check if Docker daemon is running, if not, exit with a message
+if ! docker info >/dev/null 2>&1; then
+    echo "Error: Docker daemon is not reachable. Please start Docker and try again."
+    exit 1
+fi
+
 # Step 1: Setup the required directories on host machine
 
 # Array of directories to create
