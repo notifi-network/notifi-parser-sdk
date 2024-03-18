@@ -10,8 +10,8 @@ DEV_AUTH_TOKEN_FILE="$CREDENTIALS_DIRECTORY/dev-token.txt"
 DOCKER_COMPOSE_FILE_LOCATION="$DEVELOPMENT_ENVIRONMENT_DIRECTORY/docker-compose.yml"
 DOCKER_FILE_LOCATION="$DEVELOPMENT_ENVIRONMENT_DIRECTORY/Dockerfile"
 
-DOCKER_COMPOSE_DOWNLOAD_URL="https://raw.githubusercontent.com/notifi-network/notifi-parser-sdk/main/docker-compose.yml"
-DOCKER_FILE_DOWNLOAD_URL="https://raw.githubusercontent.com/notifi-network/notifi-parser-sdk/main/Dockerfile"
+DOCKER_COMPOSE_DOWNLOAD_URL="https://raw.githubusercontent.com/notifi-network/notifi-parser-sdk/jm/cli-updates/docker-compose.yml"
+DOCKER_FILE_DOWNLOAD_URL="https://raw.githubusercontent.com/notifi-network/notifi-parser-sdk/jm/cli-updates/Dockerfile"
 
 # Step 1: Setup the required directories on host machine
 
