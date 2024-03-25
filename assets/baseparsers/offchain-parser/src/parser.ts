@@ -24,10 +24,11 @@ const makeReturnEvent = (event: string): CommonHost.Event => {
 
 const parse: Offchain.Parser["parse"] = async (
   args,
-  rpc,
-  storage,
+  _rpc,
+  _storage,
   logger,
-  subscriptions
+  _subscriptions,
+  _fetchRpc
 ) => {
   //grab events from args
   const events = args.offchainEvents;
