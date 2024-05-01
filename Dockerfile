@@ -19,11 +19,11 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /tmp
 
 # Download and unzip the release, we do this so that we can get the executables and assets
-RUN curl -L -o notifi-parser-sdk.zip https://github.com/notifi-network/notifi-parser-sdk/archive/refs/tags/v0.0.0.zip \
+RUN RELEASE_URL=$(curl -s https://api.github.com/repos/notifi-network/notifi-parser-sdk/releases/latest | grep "zipball_url" | cut -d '"' -f 4) \
+    && curl -L -o notifi-parser-sdk.zip "$RELEASE_URL" \
     && unzip notifi-parser-sdk.zip \
-    && rm notifi-parser-sdk.zip
-
-RUN mv notifi-parser-sdk-0.0.0 notifi-parser-sdk
+    && rm notifi-parser-sdk.zip \
+    && mv $(ls -d notifi-network-notifi-parser-sdk-* | head -n 1) notifi-parser-sdk
 # Ensure the script is executable
 RUN chmod +x /tmp/notifi-parser-sdk/executables/user-group-handle.sh
 
