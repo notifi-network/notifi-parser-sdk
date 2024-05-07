@@ -8,8 +8,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "npx tsc & npx rollup -c rollup.config.js",
     "debug": "node --inspect=0.0.0.0:9229 --require=ts-node/register --loader ts-node/esm ./node_modules/@notifi-network/local-fusion/dist/cli/bin.js EVM --parserConfigPath ./notifi.config.json",
-    "watch": "nodemon --watch ./src --ext ts --exec npm run debug --legacy-watch",
-    "build:upload": "npm run build && node graphql/uploadParser.js"
+    "watch": "nodemon --watch ./src --ext ts --exec npm run debug --legacy-watch"
   },
   "keywords": [],
   "author": "",
