@@ -1,10 +1,11 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG USER_ID
 ARG GROUP_ID
 
 # Update and install dependencies
 RUN apt-get update && apt-get install -y \
+    adduser \
     curl \
     bash \
     nano \
@@ -51,7 +52,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     && export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
     && nvm install 20.11.0 \
-    && npm install -g @notifi-network/local-fusion@3.2.3
+    && npm install -g @notifi-network/local-fusion@3.2.7
 
 
 # Make executables executable
