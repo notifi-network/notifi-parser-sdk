@@ -23,6 +23,7 @@ read -p $'Enter one of the following values (numbers):
 8: INJECTIVE \t\t 9: OPTIMISM\n
 10: OSMOSIS \t\t 11: POLYGON\n
 12: SUI \t\t 13: ZKSYNC\n
+14: BOTANIX \t\t 15: HYPEREVM\n
 Value: ' PARSERTYPE
 
 
@@ -52,6 +53,9 @@ OPTION_MAP=(
     ["11"]="5"
     ["12"]="14"
     ["13"]="16"
+    ["14"]="52"
+    ["15"]="50"
+
 )
 
 declare -A DEFAULT_RPC_MAP
@@ -68,6 +72,8 @@ DEFAULT_RPC_MAP=(
     ["11"]="https://rpc.ankr.com/polygon"
     ["12"]="14"
     ["13"]="16"
+    ["14"]="52"
+    ["15"]="50"
 )
 
 DEFAULT_RPC="${DEFAULT_RPC_MAP[$PARSERTYPE]}"
